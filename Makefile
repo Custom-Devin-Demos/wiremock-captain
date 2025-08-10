@@ -37,3 +37,13 @@ integration-test:
 	@npm run-script integration-test
 	@make stop-dependencies
 	$(call OK, integration-test complete...)
+
+integration-test-compose:
+	@docker compose up -d wiremock
+	@npm run-script integration-test
+	@docker compose down
+	$(call OK, integration-test-compose complete...)
+
+health-check:
+	@curl -f http://localhost:8080/__admin/health || (echo "WireMock health check failed" && exit 1)
+	$(call OK, health-check complete...)

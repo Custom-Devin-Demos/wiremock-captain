@@ -160,6 +160,31 @@ inside each test if necessary using `stubPriority` from `IWireMockFeatures`.
 - Use `getUnmatchedRequests` to make sure there are no unmatched mocks at the end of each of the tests
 - Use `clearAllExceptDefault` after each test to clear mocks set up during individual tests
 
+## Integration Testing
+
+WireMock Captain includes comprehensive integration testing infrastructure that works out of the box.
+
+### Quick Start
+
+```bash
+# Run all tests (unit + integration) with automatic setup
+npm run integration-test
+```
+
+This automatically handles WireMock server lifecycle, including:
+- Starting WireMock container with webhook extensions
+- Health checks and retry logic  
+- Running integration tests
+- Cleanup and teardown
+
+### Alternative Approaches
+
+- **Docker Compose**: `npm run wiremock:compose:test`
+- **Manual Control**: `npm run wiremock:start` → `npm run test:integration` → `npm run wiremock:stop`
+- **Makefile**: `make integration-test`
+
+For detailed setup instructions, see [Integration Testing Setup](docs/INTEGRATION_TESTING_SETUP.md).
+
 ## Development
 
 To use Dev Container locally for easier development environment setup, use VSCode
