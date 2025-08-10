@@ -30,7 +30,8 @@
     "ncu:check": "ncu",
     "ncu:make": "ncu -u",
     "precommit": "pretty-quick --staged",
-    "prettier": "prettier --write --loglevel silent ."
+    "prettier": "prettier --write --loglevel silent .",
+    "demo:ecommerce": "npx ts-node demo/ecommerce-checkout/checkout-demo.ts"
   },
   "precommit": [
     "precommit"
