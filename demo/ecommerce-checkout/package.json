@@ -1,0 +1,27 @@
+{
+  "name": "ecommerce-checkout-demo",
+  "version": "1.0.0",
+  "description": "E-commerce checkout demo using wiremock-captain for multi-service integration testing",
+  "main": "checkout-demo.js",
+  "scripts": {
+    "demo": "npx ts-node checkout-demo.ts",
+    "build": "npx tsc checkout-demo.ts",
+    "start": "node checkout-demo.js"
+  },
+  "keywords": [
+    "wiremock",
+    "ecommerce",
+    "integration-testing",
+    "api-mocking",
+    "checkout-flow"
+  ],
+  "dependencies": {
+    "axios": "^1.6.0",
+    "wiremock-captain": "file:../.."
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
