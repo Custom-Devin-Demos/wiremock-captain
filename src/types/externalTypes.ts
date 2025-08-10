@@ -82,6 +82,17 @@ export enum ResponseTransformer {
     RESPONSE_TEMPLATE = 'response-template',
 }
 
+export enum FeatureFlagType {
+    /** Simple boolean on/off flag */
+    BOOLEAN = 'BOOLEAN',
+    /** Percentage-based rollout (0-100) */
+    PERCENTAGE = 'PERCENTAGE',
+    /** Conditional flag based on customer attributes */
+    CONDITIONAL = 'CONDITIONAL',
+    /** A/B testing variant selection */
+    AB_TEST = 'AB_TEST',
+}
+
 export { Method };
 
 export type WireMockDelay = IChunkedDribbleDelay | IFixedDelay | ILogNormalDelay | IUniformDelay;
