@@ -7,3 +7,4 @@ export * from './types/IWireMockRequest';
 export * from './types/IWireMockResponse';
 export * from './WireMock';
 export * from './WireMockAPI';
+export * from './RequestFilter';
