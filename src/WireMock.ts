@@ -16,6 +16,7 @@ import { IWireMockRequest } from './types/IWireMockRequest';
 import { IWireMockResponse } from './types/IWireMockResponse';
 import { filterRequest, getWebhookBody, getWebhookDelayBody } from './utils';
 import { MatchingAttributes } from './types/externalTypes';
+import { RequestFilterBuilder } from './RequestFilter';
 
 // endpoint where wiremock stores mocks
 const WIREMOCK_MAPPINGS_URL = '__admin/mappings';
@@ -196,18 +197,32 @@ export class WireMock {
 
     /**
      * Returns list of request(s) made to the WireMock API
-     * @param method Method to match the request(s) made against
-     * @param endpointUrl URL to get the request(s) made against
+     * @param methodOrFilter Method to match the request(s) made against, or a RequestFilterBuilder, or a custom filter function
+     * @param endpointUrl URL to get the request(s) made against (only used with Method parameter)
      * @returns List of wiremock requests made to the endpoint with given method
      */
-    public async getRequestsForAPI(method: Method, endpointUrl: string): Promise<unknown[]> {
+    public async getRequestsForAPI(
+        methodOrFilter: Method | RequestFilterBuilder | ((request: unknown) => boolean),
+        endpointUrl?: string,
+    ): Promise<unknown[]> {
         const response = await fetch(this.makeUrl(WIREMOCK_REQUESTS_URL), { method: 'GET' });
         const body: IRequestGetResponse = (await response.json()) as IRequestGetResponse;
-        return (
-            body.requests
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                .filter((r: any) => filterRequest(method, endpointUrl, r))
-        );
+
+        let filterFn: (request: unknown) => boolean;
+
+        if (typeof methodOrFilter === 'function') {
+            filterFn = methodOrFilter;
+        } else if (methodOrFilter instanceof RequestFilterBuilder) {
+            filterFn = methodOrFilter.build();
+        } else if (typeof methodOrFilter === 'string' && endpointUrl) {
+            filterFn = (r) => filterRequest(methodOrFilter, endpointUrl, r);
+        } else {
+            throw new Error(
+                'Invalid parameters: either provide (method, endpointUrl) or a RequestFilterBuilder or a filter function',
+            );
+        }
+
+        return body.requests.filter(filterFn);
     }
 
     /**
